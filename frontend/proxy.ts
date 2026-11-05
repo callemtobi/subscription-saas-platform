@@ -2,6 +2,7 @@
 // middleware.ts (at project root, NOT app/middleware.ts)
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {jwtVerify} from "jose";
 
 // Routes that require authentication
 // const protectedRoutes = ["/projects", "/dashboard", "/settings"];
@@ -10,10 +11,34 @@ const protectedRoutes = ["/settings"];
 // Routes that are only accessible when NOT authenticated
 const authRoutes = ["/login", "/register", "/reset-password"];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("auth_token")?.value;
+  const token = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
 
+  if (!token && !refreshToken) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+  
+  if (token) {
+    try {
+      const {payload} = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
+      return NextResponse.next();
+    } catch (error) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+
+  if (refreshToken) {
+    try {
+      const {payload} = await jwtVerify(refreshToken, new TextEncoder().encode(process.env.JWT_SECRET));
+      return NextResponse.next();
+    } catch (error) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
   // Check if accessing a protected route without auth
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)

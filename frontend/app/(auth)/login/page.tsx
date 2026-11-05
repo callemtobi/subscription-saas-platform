@@ -76,13 +76,6 @@ export default function LoginPage() {
             workspace.
           </p>
 
-          {/* Error Banner */}
-          {error && (
-            <div className="mt-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-600 text-center">
-              {error}
-            </div>
-          )}
-
           {/* SSO Buttons */}
           <div className="mt-7 space-y-3">
             <button className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
@@ -198,7 +191,7 @@ export default function LoginPage() {
           </div>
 
           {/* Remember + Session */}
-          <div className="mt-4 flex items-center justify-between">
+          {/* <div className="mt-4 flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -211,18 +204,24 @@ export default function LoginPage() {
             <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
               30-day session
             </span>
-          </div>
+          </div> */}
 
           {/* Sign In Button */}
           <button 
           type="submit"
           disabled={loading}
            className="mt-6 w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition">
-            Sign In
             {loading ? "Signing In..." : "Sign In"}
               <ArrowRight className="h-4 w-4" />
           </button>
           </form>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="mt-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-600 text-center">
+              {error}
+            </div>
+          )}
 
           {/* Routing Footer */}
           <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">

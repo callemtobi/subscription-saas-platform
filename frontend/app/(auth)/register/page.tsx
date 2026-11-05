@@ -26,11 +26,11 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     fullName: "",
     email: "",
-    slug: "acme",
+    slug: "",
     role: "",
     password: "",
     showPassword: false,
-    agree: true,
+    agree: false,
   });
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -64,6 +64,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 flex items-center justify-center p-4 py-10">
       <div className="w-full max-w-xl">
+      <form onSubmit={handleSubmit}>
         <div className="rounded-3xl bg-white shadow-xl shadow-slate-200/60 border border-slate-100 p-8 sm:p-10">
           {/* Badge */}
           <div className="flex justify-center mb-5">
@@ -123,6 +124,7 @@ export default function RegisterPage() {
                   value={form.fullName}
                   // onChange={(e) => setForm({...form, fullName: e.target.value})}
                   onChange={handleChange}
+                  name="fullName"
                   placeholder="Elena Rostova"
                   className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 />
@@ -277,11 +279,12 @@ export default function RegisterPage() {
           </div>
 
           {/* Submit Button */}
-          <button className="mt-6 w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition">
+          <button type="submit" disabled={loading} className="mt-6 w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition">
             Create Account & Join Workspace
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
+        </form>
         {error && (
           <p className="text-sm text-red-600 mt-2 text-center">{error}</p>
         )}
